@@ -1,8 +1,9 @@
-package entidades;
+package model.entidades;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import model.excecoes.ExcecaoDominio;
 
 public class Reserva {
     private static DateTimeFormatter dt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -13,7 +14,10 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva(Integer numeroQuarto, LocalDate checkIn, LocalDate checkOut) {
+    public Reserva(Integer numeroQuarto, LocalDate checkIn, LocalDate checkOut)  {
+        if (!checkOut.isAfter(checkIn)){
+            throw new ExcecaoDominio("Data de checkOut tem de ser após data de checkIn!");
+        }
         this.numeroQuarto = numeroQuarto;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
@@ -40,17 +44,16 @@ public class Reserva {
         return dur.toDays();
     }
     
-    public String atualizarReserva(LocalDate checkin, LocalDate checkout){
+    public void atualizarReserva(LocalDate checkin, LocalDate checkout) {
         LocalDate agora = LocalDate.now();
         if (checkin.isBefore(agora) || checkout.isBefore(agora)){
-            return "As datas atualizadas devem ser datas futuras.";
+            throw new ExcecaoDominio ("As datas atualizadas devem ser datas futuras.");
         }
         if (!checkout.isAfter(checkin)){
-            return "Data de checkOut tem de ser após data de checkIn!";
+            throw new ExcecaoDominio("Data de checkOut tem de ser após data de checkIn!");
         }
         this.checkIn = checkin;
         this.checkOut = checkout;
-        return null;
         
     }
 
