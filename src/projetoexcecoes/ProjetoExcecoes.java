@@ -31,14 +31,11 @@ public class ProjetoExcecoes {
             System.out.print("Data de checkOut (DD/MM/AAAA): ");
             dataCheckout = LocalDate.parse(sc.next(), dt);
             
-            LocalDate agora = LocalDate.now();
-            if (dataCheckin.isBefore(agora) || dataCheckout.isBefore(agora)){
-                System.out.println("Erro na reserva! As datas atualizadas devem ser datas futuras.");
-            } else if (!dataCheckout.isAfter(dataCheckin)){
-                System.out.println("Erro na reserva! Data de checkOut tem de ser após data de checkIn!");
+            String erro = res.atualizarReserva(dataCheckin, dataCheckout);
+            if (erro != null) {
+                System.out.println("Erro na reserva: " + erro);
             } else {
-                res.atualizarReserva(dataCheckin, dataCheckout);
-                System.out.println(res); 
+            System.out.println(res); 
             }
             
  

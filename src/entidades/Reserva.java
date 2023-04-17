@@ -40,9 +40,18 @@ public class Reserva {
         return dur.toDays();
     }
     
-    public void atualizarReserva(LocalDate checkin, LocalDate checkout){
+    public String atualizarReserva(LocalDate checkin, LocalDate checkout){
+        LocalDate agora = LocalDate.now();
+        if (checkin.isBefore(agora) || checkout.isBefore(agora)){
+            return "As datas atualizadas devem ser datas futuras.";
+        }
+        if (!checkout.isAfter(checkin)){
+            return "Data de checkOut tem de ser após data de checkIn!";
+        }
         this.checkIn = checkin;
         this.checkOut = checkout;
+        return null;
+        
     }
 
     @Override
